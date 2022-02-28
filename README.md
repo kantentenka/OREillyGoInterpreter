@@ -1,1 +1,2 @@
 # OREillyGoInterpreter
+#Go言語で作るインタプリタ学習用プロジェクト
