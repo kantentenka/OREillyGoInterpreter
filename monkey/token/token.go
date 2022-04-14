@@ -14,8 +14,9 @@ const (
 	EOF     = "EOF"     //ファイル終端、構文解析器にここで終了を教える
 
 	//識別子+リテラル
-	IDENT = "IDENT" //add, foobar, x, y
-	INT   = "INT"   //123
+	IDENT  = "IDENT" //add, foobar, x, y
+	INT    = "INT"   //123
+	STRING = "STRING"
 
 	//演算子
 	ASSIGN   = "="
