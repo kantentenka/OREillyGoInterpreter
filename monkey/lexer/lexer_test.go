@@ -13,7 +13,6 @@ func TestNextToken(t *testing.T) {
 	//テストケースを拡張
 
 	input := `let five = 5;
-
 	let ten = 10;
 
 	let add = fn(x,y){
@@ -33,12 +32,15 @@ func TestNextToken(t *testing.T) {
 	10 != 9;
 	"foobar"
 	"foo bar"
+	"//notComment"
 	[1, 2];
 	{"foo": "bar"}
 	//
 	//1
 	1//1
 	//comment
+	true && false
+	0 || 1 
 	`
 
 	tests := []struct {
@@ -120,6 +122,7 @@ func TestNextToken(t *testing.T) {
 		{token.SEMICOLON, ";"},
 		{token.STRING, "foobar"},
 		{token.STRING, "foo bar"},
+		{token.STRING, "//notComment"},
 		{token.LBRACKET, "["},
 		{token.INT, "1"},
 		{token.COMMA, ","},
@@ -131,6 +134,12 @@ func TestNextToken(t *testing.T) {
 		{token.COLON, ":"},
 		{token.STRING, "bar"},
 		{token.RBRACE, "}"},
+		{token.INT, "1"},
+		{token.TRUE, "true"},
+		{token.AND, "&&"},
+		{token.FALSE, "false"},
+		{token.INT, "0"},
+		{token.OR, "||"},
 		{token.INT, "1"},
 		{token.EOF, ""},
 	}

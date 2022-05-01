@@ -1,4 +1,5 @@
-
-let x = 1+2+3;
-puts("HelloMonkey");
-puts("1+2+3 = ",a);
+if (0){
+puts("aa"=="aa");}
+else{
+    puts("yyp")
+}
