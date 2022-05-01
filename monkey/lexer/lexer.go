@@ -2,7 +2,10 @@
 
 package lexer
 
-import "monkey/token"
+import (
+	"fmt"
+	"monkey/token"
+)
 
 type Lexer struct {
 	input        string
@@ -34,6 +37,9 @@ func (l *Lexer) NextToken() token.Token {
 	var tok token.Token
 	l.skipWhitespace() //スペースのチェック
 
+	for l.ch == '/' && l.peekChar() == '/' {
+		l.readOneLineComment() // /n /r が来るまで文字を読み飛ばす
+	}
 	switch l.ch {
 	case '=':
 		if l.peekChar() == '=' {
@@ -59,7 +65,9 @@ func (l *Lexer) NextToken() token.Token {
 			tok = newToken(token.BANG, l.ch)
 		}
 	case '/':
+
 		tok = newToken(token.SLASH, l.ch)
+
 	case '*':
 		tok = newToken(token.ASTERISK, l.ch)
 	case '<':
@@ -129,6 +137,13 @@ func (l *Lexer) skipWhitespace() {
 	for l.ch == ' ' || l.ch == '\t' || l.ch == '\n' || l.ch == '\r' {
 		l.readChar()
 	}
+}
+func (l *Lexer) readOneLineComment() {
+	for l.ch != '\n' && l.ch != '\r' {
+		fmt.Print(l.ch)
+		l.readChar()
+	}
+	l.skipWhitespace()
 }
 func (l *Lexer) readNumber() string {
 	position := l.position
