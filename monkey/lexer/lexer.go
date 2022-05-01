@@ -38,7 +38,7 @@ func (l *Lexer) NextToken() token.Token {
 	l.skipWhitespace() //スペースのチェック
 
 	for l.ch == '/' && l.peekChar() == '/' {
-		l.readOneLineComment() // /n /r が来るまで文字を読み飛ばす
+		l.skipOneLineComment() // /n /r が来るまで文字を読み飛ばす
 	}
 	switch l.ch {
 	case '=':
@@ -138,7 +138,7 @@ func (l *Lexer) skipWhitespace() {
 		l.readChar()
 	}
 }
-func (l *Lexer) readOneLineComment() {
+func (l *Lexer) skipOneLineComment() {
 	for l.ch != '\n' && l.ch != '\r' {
 		fmt.Print(l.ch)
 		l.readChar()
