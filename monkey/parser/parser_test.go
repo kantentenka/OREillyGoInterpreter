@@ -514,6 +514,50 @@ func TestIfExpression(t *testing.T) {
 		t.Errorf("exp.Alternative.Statements was not nil. got=%+v", exp.Alternative)
 	}
 }
+func TestWhileExpression(t *testing.T) {
+	input := `while (x < y) { x }`
+
+	l := lexer.New(input)
+	p := New(l)
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+
+	if len(program.Statements) != 1 {
+		t.Fatalf("program.Body does not contain %d statements. got=%d\n",
+			1, len(program.Statements))
+	}
+
+	stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
+	if !ok {
+		t.Fatalf("program.Statements[0] is not ast.ExpressionStatement. got=%T",
+			program.Statements[0])
+	}
+
+	exp, ok := stmt.Expression.(*ast.WhileExpression)
+	if !ok {
+		t.Fatalf("stmt.Expression is not ast.WhileExpression. got=%T",
+			stmt.Expression)
+	}
+
+	if !testInfixExpression(t, exp.Condition, "x", "<", "y") {
+		return
+	}
+
+	if len(exp.Process.Statements) != 1 {
+		t.Errorf("process is not 1 statements. got=%d\n",
+			len(exp.Process.Statements))
+	}
+
+	process, ok := exp.Process.Statements[0].(*ast.ExpressionStatement)
+	if !ok {
+		t.Fatalf("Statements[0] is not ast.ExpressionStatement. got=%T",
+			exp.Process.Statements[0])
+	}
+
+	if !testIdentifier(t, process.Expression, "x") {
+		return
+	}
+}
 func TestFunctionLiteralParsing(t *testing.T) {
 	input := `fn(x, y) { x + y; }`
 
